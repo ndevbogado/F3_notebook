@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Caja de herramientas matemática I: gradiente, divergencia y
+rotor</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../style.css" />
+  <script defer=""
+  src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+</head>
+<body>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#caja-de-herramientas-matemática-i-gradiente-divergencia-y-rotor"
+id="toc-caja-de-herramientas-matemática-i-gradiente-divergencia-y-rotor">Caja
+de herramientas matemática I: gradiente, divergencia y rotor</a>
+<ul>
+<li><a href="#notación" id="toc-notación">1. Notación</a></li>
+<li><a href="#el-operador-nabla" id="toc-el-operador-nabla">2. El
+operador nabla</a></li>
+<li><a href="#gradiente" id="toc-gradiente">3. Gradiente</a></li>
+<li><a href="#divergencia" id="toc-divergencia">4. Divergencia</a></li>
+<li><a href="#rotor-curl" id="toc-rotor-curl">5. Rotor
+(<em>curl</em>)</a></li>
+<li><a href="#propiedades-de-los-productos-y-reglas-con-nabla"
+id="toc-propiedades-de-los-productos-y-reglas-con-nabla">6. Propiedades
+de los productos y reglas con <span
+class="math inline">\nabla</span></a></li>
+<li><a href="#operadores-de-segundo-orden"
+id="toc-operadores-de-segundo-orden">7. Operadores de segundo
+orden</a></li>
+<li><a href="#pendientes-para-próximas-sesiones"
+id="toc-pendientes-para-próximas-sesiones">8. Pendientes para próximas
+sesiones</a></li>
+<li><a href="#hoja-resumen-1-página" id="toc-hoja-resumen-1-página">9.
+Hoja resumen (1 página)</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1
+id="caja-de-herramientas-matemática-i-gradiente-divergencia-y-rotor">Caja
+de herramientas matemática I: gradiente, divergencia y rotor</h1>
+<p><em>Física 3 · Sesión 1 · Notas manuscritas transcriptas, ordenadas y
+revisadas</em></p>
+<p>Fuente original: <code>originals/Math_toolkit01.pdf</code> (4
+páginas). Lo que escribiste vos aparece como texto normal. Todo lo que
+cambié o agregué está en un recuadro con una etiqueta y un código que
+coincide con el informe
+<code>reports/01-math-toolkit-changes.txt</code>:</p>
+<blockquote class="fix">
+<p><strong>[Corregido · C0]</strong> Un error de las notas, arreglado.
+Indica qué decía y cómo queda.</p>
+</blockquote>
+<blockquote class="clar">
+<p><strong>[Aclarado · C0]</strong> Una frase imprecisa o ambigua,
+reformulada sin cambiar la idea.</p>
+</blockquote>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A0]</strong> Contenido nuevo que no
+estaba en tus notas.</p>
+</blockquote>
+<blockquote class="not">
+<p><strong>[Notación · N0]</strong> Cambio de símbolos para que todo el
+cuaderno use el mismo criterio.</p>
+</blockquote>
+<p>Si algún recuadro no te convence, borralo y el texto de tus notas
+originales sigue siendo coherente.</p>
+<h2 id="notación">1. Notación</h2>
+<p>En las notas se usan <span class="math inline">F</span>, <span
+class="math inline">f</span> y <span class="math inline">T</span> para
+el mismo tipo de objeto. Para evitar confusiones usamos:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Símbolo</th>
+<th>Significa</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">f,\ g</span></td>
+<td>campo <strong>escalar</strong> (un número en cada punto)</td>
+<td><span class="math inline">f(x,y,z)=x^2+y^3+z^4</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mathbf{F},\ \mathbf{A}</span></td>
+<td>campo <strong>vectorial</strong> (un vector en cada punto)</td>
+<td><span class="math inline">\mathbf{F}=(F_x,\,F_y,\,F_z)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\hat{x},\ \hat{y},\ \hat{z}</span></td>
+<td>vectores unitarios de los ejes</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">p_0</span></td>
+<td>un punto fijo del espacio</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote class="not">
+<p><strong>[Notación · N1]</strong> En tus notas, el campo escalar
+aparece a veces como <span class="math inline">F</span> y a veces como
+<span class="math inline">T</span> (gradiente y Laplaciano), y el campo
+vectorial aparece como <span class="math inline">T</span> (divergencia y
+rotor). Acá el escalar es siempre <span class="math inline">f</span> y
+el vectorial siempre <span class="math inline">\mathbf{F}</span> (en
+negrita).</p>
+</blockquote>
+<h2 id="el-operador-nabla">2. El operador nabla</h2>
+<p>El operador nabla es</p>
+<p><span class="math display">\nabla \;=\;
+\hat{x}\,\frac{\partial}{\partial x} \;+\;
+\hat{y}\,\frac{\partial}{\partial y} \;+\;
+\hat{z}\,\frac{\partial}{\partial z}</span></p>
+<p>Es un <strong>operador diferencial vectorial</strong>: no es un
+vector común ni una función, sino algo que “espera” un campo para actuar
+sobre él. Según sobre qué actúa y cómo, da tres operaciones
+distintas:</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operación</th>
+<th>Se aplica a</th>
+<th>Resultado</th>
+<th>Notación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gradiente</td>
+<td>campo escalar <span class="math inline">f</span></td>
+<td>campo vectorial</td>
+<td><span class="math inline">\nabla f</span></td>
+</tr>
+<tr class="even">
+<td>Divergencia</td>
+<td>campo vectorial <span class="math inline">\mathbf{F}</span></td>
+<td>campo escalar</td>
+<td><span class="math inline">\nabla\cdot\mathbf{F}</span></td>
+</tr>
+<tr class="odd">
+<td>Rotor (<em>curl</em>)</td>
+<td>campo vectorial <span class="math inline">\mathbf{F}</span></td>
+<td>campo vectorial</td>
+<td><span class="math inline">\nabla\times\mathbf{F}</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote class="fix">
+<p><strong>[Corregido · C3]</strong> Tus notas escribían <span
+class="math inline">\nabla = \left[\tfrac{\partial}{\partial
+x};\tfrac{\partial}{\partial y};\tfrac{\partial}{\partial
+z}\right]\cdot\left[\hat{x};\hat{y};\hat{z}\right]</span>. Es una suma
+de tres términos (derivada en cada eje por su vector unitario), no un
+producto escalar entre dos listas. Ver la fórmula de arriba.</p>
+</blockquote>
+<blockquote class="clar">
+<p><strong>[Aclarado · C11]</strong> En tus notas el caso ① dice
+“producto por escalar: <span class="math inline">\alpha\nabla T</span>”.
+Lo que se hace es multiplicar <span class="math inline">\nabla</span>
+por un campo escalar (eso es el gradiente). Si además hay una constante
+<span class="math inline">\alpha</span>, vale la linealidad: <span
+class="math inline">\nabla(\alpha f)=\alpha\,\nabla f</span>.</p>
+</blockquote>
+<h2 id="gradiente">3. Gradiente</h2>
+<h3 id="definición-e-interpretación">3.1 Definición e
+interpretación</h3>
+<p>Para un campo escalar <span class="math inline">f(x,y,z)</span>:</p>
+<p><span class="math display">\nabla f \;=\; \frac{\partial f}{\partial
+x}\,\hat{x} \;+\; \frac{\partial f}{\partial y}\,\hat{y} \;+\;
+\frac{\partial f}{\partial z}\,\hat{z}</span></p>
+<p>Cada componente (derivada parcial) es la razón de cambio de <span
+class="math inline">f</span> a lo largo de uno de los ejes. El gradiente
+apunta en la dirección de <strong>máximo crecimiento</strong> de <span
+class="math inline">f</span>, y su módulo es la <strong>tasa de
+crecimiento</strong> (la pendiente) en esa dirección:</p>
+<p><span class="math display">\lvert\nabla f\rvert \;=\;
+\sqrt{\left(\frac{\partial f}{\partial x}\right)^{2} +
+\left(\frac{\partial f}{\partial y}\right)^{2} + \left(\frac{\partial
+f}{\partial z}\right)^{2}}</span></p>
+<blockquote class="fix">
+<p><strong>[Corregido · C1]</strong> Tus notas decían que el gradiente
+“indica hacia dónde se encuentra el máximo cambio de pendiente”. Lo
+correcto es que indica hacia dónde <strong>crece más rápido la
+función</strong> (la pendiente es el módulo del gradiente, no lo que
+cambia).</p>
+</blockquote>
+<blockquote class="fix">
+<p><strong>[Corregido · C2]</strong> “Radio de crecimiento” pasa a “tasa
+de crecimiento” (rate, no radius).</p>
+</blockquote>
+<h3 id="puntos-estacionarios">3.2 Puntos estacionarios</h3>
+<p>Si <span class="math inline">\nabla f = \mathbf{0}</span> en un punto
+<span class="math inline">(x,y,z)</span>, ese punto es un <strong>punto
+estacionario</strong>: puede ser un máximo local, un mínimo local o un
+punto silla.</p>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A2]</strong> Tres datos que completan
+la idea:</p>
+<ul>
+<li><span class="math inline">\nabla f=\mathbf{0}</span> es condición
+<strong>necesaria</strong> para un extremo, pero no suficiente: por eso
+también existen los puntos silla.</li>
+<li>La derivada de <span class="math inline">f</span> en la dirección de
+un vector unitario <span class="math inline">\hat{u}</span> es <span
+class="math inline">D_{\hat{u}}f=\nabla f\cdot\hat{u}</span>. Es máxima
+cuando <span class="math inline">\hat{u}</span> apunta como <span
+class="math inline">\nabla f</span>, y vale entonces <span
+class="math inline">\lvert\nabla f\rvert</span>; eso justifica la
+interpretación de 3.1.</li>
+<li>El gradiente es <strong>perpendicular a las curvas (o superficies)
+de nivel</strong> de <span class="math inline">f</span>, como se ve en
+la figura.</li>
+</ul>
+</blockquote>
+<figure>
+<img src="../figures/fig1_gradiente.png"
+alt="Curvas de nivel y gradiente de un mínimo (x^2+y^2) y de un punto silla (x^2-y^2). En el origen el gradiente se anula." />
+<figcaption aria-hidden="true">Curvas de nivel y gradiente de un mínimo
+(<span class="math inline">x^2+y^2</span>) y de un punto silla (<span
+class="math inline">x^2-y^2</span>). En el origen el gradiente se
+anula.</figcaption>
+</figure>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A1]</strong> La figura 1 no estaba en
+tus notas. Se genera con <code>figures/make_figures.py</code>.</p>
+</blockquote>
+<h3 id="ejemplo-hallar-el-gradiente-problema-1.11-en-tus-notas">3.3
+Ejemplo: hallar el gradiente (Problema 1.11 en tus notas)</h3>
+<p>Dado <span class="math inline">f(x,y,z)=x^2+y^3+z^4</span>:</p>
+<p><span class="math display">\nabla f = \frac{\partial}{\partial
+x}\!\left(x^2+y^3+z^4\right)\hat{x} + \frac{\partial}{\partial
+y}\!\left(x^2+y^3+z^4\right)\hat{y} + \frac{\partial}{\partial
+z}\!\left(x^2+y^3+z^4\right)\hat{z}</span></p>
+<p><span class="math display">\nabla f = (2x)\,\hat{x} + (3y^2)\,\hat{y}
++ (4z^3)\,\hat{z}</span></p>
+<p><span class="math display">\boxed{\;\nabla f = \left(2x,\ 3y^2,\
+4z^3\right)\;}</span></p>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A9]</strong> Comprobación numérica: en
+<span class="math inline">(1,2,1)</span> queda <span
+class="math inline">\nabla f=(2,\,12,\,4)</span> y <span
+class="math inline">\lvert\nabla
+f\rvert=\sqrt{2^2+12^2+4^2}=\sqrt{164}\approx 12{,}8</span>. Además,
+<span class="math inline">\nabla f=\mathbf{0}</span> solo en el
+origen.</p>
+</blockquote>
+<h2 id="divergencia">4. Divergencia</h2>
+<p>Para un campo vectorial <span
+class="math inline">\mathbf{F}=(F_x,F_y,F_z)</span>:</p>
+<p><span class="math display">\nabla\cdot\mathbf{F} \;=\; \frac{\partial
+F_x}{\partial x} + \frac{\partial F_y}{\partial y} + \frac{\partial
+F_z}{\partial z}</span></p>
+<p>El resultado es un <strong>escalar</strong>: se pierde el carácter
+vectorial. La divergencia indica cuánto se esparce o <em>diverge</em> el
+campo desde un punto <span class="math inline">p_0</span>:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Signo</th>
+<th>Qué se ve</th>
+<th>Nombre del punto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span
+class="math inline">\nabla\cdot\mathbf{F}(p_0)&gt;0</span></td>
+<td>las flechas “apuntan” hacia afuera</td>
+<td><strong>fuente</strong></td>
+</tr>
+<tr class="even">
+<td><span
+class="math inline">\nabla\cdot\mathbf{F}(p_0)&lt;0</span></td>
+<td>las flechas “apuntan” hacia adentro</td>
+<td><strong>sumidero</strong></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\nabla\cdot\mathbf{F}(p_0)=0</span></td>
+<td>sale tanto como entra</td>
+<td>ni fuente ni sumidero</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="fix">
+<p><strong>[Corregido · C4]</strong> Tus notas escribían la divergencia
+como <span class="math inline">\tfrac{\partial T}{\partial
+x}+\tfrac{\partial T}{\partial y}+\tfrac{\partial T}{\partial z}</span>,
+con el mismo símbolo <span class="math inline">T</span> en los tres
+términos. Para un campo vectorial se deriva cada componente respecto de
+su propio eje (<span class="math inline">F_x</span> respecto de <span
+class="math inline">x</span>, etc.), como arriba.</p>
+</blockquote>
+<blockquote class="clar">
+<p><strong>[Aclarado · C5]</strong> Las notas decían que la divergencia
+“da una noción de la velocidad con la que nos movemos respecto a <span
+class="math inline">p_0</span>”. Más precisamente: mide la <strong>tasa
+de expansión</strong> del campo, es decir, el flujo neto que sale de un
+entorno pequeño de <span class="math inline">p_0</span> por unidad de
+volumen.</p>
+</blockquote>
+<blockquote class="fix">
+<p><strong>[Corregido · C6]</strong> Las notas decían “<span
+class="math inline">\nabla\cdot\mathbf{T}\le 0</span> son sumideros”. El
+caso <span class="math inline">=0</span> no es un sumidero: ahí el flujo
+neto es nulo. Queda <span class="math inline">&lt;0</span> para
+sumideros y <span class="math inline">=0</span> aparte.</p>
+</blockquote>
+<h2 id="rotor-curl">5. Rotor (<em>curl</em>)</h2>
+<p><span class="math display">\nabla\times\mathbf{F} \;=\;
+\begin{vmatrix} \hat{x} &amp; \hat{y} &amp; \hat{z} \\[2pt]
+\dfrac{\partial}{\partial x} &amp; \dfrac{\partial}{\partial y} &amp;
+\dfrac{\partial}{\partial z} \\[6pt] F_x &amp; F_y &amp; F_z
+\end{vmatrix}</span></p>
+<p>Desarrollando el determinante por la primera fila:</p>
+<p><span class="math display">\nabla\times\mathbf{F} =
+\left(\frac{\partial F_z}{\partial y}-\frac{\partial F_y}{\partial
+z}\right)\hat{x} \;-\; \left(\frac{\partial F_z}{\partial
+x}-\frac{\partial F_x}{\partial z}\right)\hat{y} \;+\;
+\left(\frac{\partial F_y}{\partial x}-\frac{\partial F_x}{\partial
+y}\right)\hat{z}</span></p>
+<p>El rotor indica <strong>cuánto y cómo rota</strong> un campo
+alrededor de <span class="math inline">p_0</span>.</p>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A7]</strong> Cómo leer el resultado: la
+dirección de <span class="math inline">\nabla\times\mathbf{F}</span> es
+el <strong>eje de giro</strong>, y el sentido sale de la regla de la
+mano derecha (los dedos siguen la rotación, el pulgar da la dirección).
+Su módulo mide la intensidad del giro: para una rotación rígida con
+velocidad angular <span class="math inline">\boldsymbol{\omega}</span>,
+el rotor vale <span class="math inline">2\boldsymbol{\omega}</span>.</p>
+</blockquote>
+<figure>
+<img src="../figures/fig2_divergencia_rotor.png"
+alt="Tres campos en el plano xy: fuente, sumidero y giro. En el tercero la divergencia es nula pero el rotor no." />
+<figcaption aria-hidden="true">Tres campos en el plano <span
+class="math inline">xy</span>: fuente, sumidero y giro. En el tercero la
+divergencia es nula pero el rotor no.</figcaption>
+</figure>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A3]</strong> La figura 2 no estaba en
+tus notas. Comprobá con las fórmulas: para <span
+class="math inline">\mathbf{F}=(-y,\,x,\,0)</span>, <span
+class="math inline">\nabla\cdot\mathbf{F}=0+0+0=0</span> y <span
+class="math inline">\nabla\times\mathbf{F}=\left(\tfrac{\partial
+x}{\partial x}-\tfrac{\partial(-y)}{\partial
+y}\right)\hat{z}=2\,\hat{z}</span>.</p>
+</blockquote>
+<h2 id="propiedades-de-los-productos-y-reglas-con-nabla">6. Propiedades
+de los productos y reglas con <span
+class="math inline">\nabla</span></h2>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A4]</strong> Tus notas pedían buscar
+las propiedades de los productos <span class="math inline">\cdot</span>
+y <span class="math inline">\times</span> y omitir esa línea. Acá están
+(ver Griffiths §1.1 y §1.2.6). La línea de pedido no se copió al
+cuaderno.</p>
+</blockquote>
+<h3 id="producto-escalar-y-vectorial-entre-vectores">6.1 Producto
+escalar y vectorial entre vectores</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Producto escalar <span
+class="math inline">\mathbf{A}\cdot\mathbf{B}</span></th>
+<th>Producto vectorial <span
+class="math inline">\mathbf{A}\times\mathbf{B}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Resultado</td>
+<td>escalar</td>
+<td>vector</td>
+</tr>
+<tr class="even">
+<td>En componentes</td>
+<td><span class="math inline">A_xB_x+A_yB_y+A_zB_z</span></td>
+<td>determinante con <span
+class="math inline">\hat{x},\hat{y},\hat{z}</span></td>
+</tr>
+<tr class="odd">
+<td>Geometría</td>
+<td><span
+class="math inline">\lvert\mathbf{A}\rvert\lvert\mathbf{B}\rvert\cos\theta</span></td>
+<td><span
+class="math inline">\lvert\mathbf{A}\rvert\lvert\mathbf{B}\rvert\sin\theta</span>
+= área del paralelogramo; perpendicular a ambos (mano derecha)</td>
+</tr>
+<tr class="even">
+<td>Orden</td>
+<td>conmutativo: <span
+class="math inline">\mathbf{A}\cdot\mathbf{B}=\mathbf{B}\cdot\mathbf{A}</span></td>
+<td><strong>anticonmutativo</strong>: <span
+class="math inline">\mathbf{A}\times\mathbf{B}=-\mathbf{B}\times\mathbf{A}</span></td>
+</tr>
+<tr class="odd">
+<td>Distributivo</td>
+<td><span
+class="math inline">\mathbf{A}\cdot(\mathbf{B}+\mathbf{C})=\mathbf{A}\cdot\mathbf{B}+\mathbf{A}\cdot\mathbf{C}</span></td>
+<td><span
+class="math inline">\mathbf{A}\times(\mathbf{B}+\mathbf{C})=\mathbf{A}\times\mathbf{B}+\mathbf{A}\times\mathbf{C}</span></td>
+</tr>
+<tr class="even">
+<td>Consigo mismo</td>
+<td><span
+class="math inline">\mathbf{A}\cdot\mathbf{A}=\lvert\mathbf{A}\rvert^2</span></td>
+<td><span
+class="math inline">\mathbf{A}\times\mathbf{A}=\mathbf{0}</span></td>
+</tr>
+<tr class="odd">
+<td>Caso nulo</td>
+<td><span class="math inline">=0</span> si son perpendiculares</td>
+<td><span class="math inline">=\mathbf{0}</span> si son paralelos</td>
+</tr>
+<tr class="even">
+<td>Asociatividad</td>
+<td>no aplica (no se puede encadenar)</td>
+<td><strong>no</strong> es asociativo</td>
+</tr>
+</tbody>
+</table>
+<p>Productos triples:</p>
+<p><span
+class="math display">\mathbf{A}\cdot(\mathbf{B}\times\mathbf{C}) =
+\mathbf{B}\cdot(\mathbf{C}\times\mathbf{A}) =
+\mathbf{C}\cdot(\mathbf{A}\times\mathbf{B}) \quad\text{(volumen del
+paralelepípedo, simetría cíclica)}</span></p>
+<p><span
+class="math display">\mathbf{A}\times(\mathbf{B}\times\mathbf{C}) =
+\mathbf{B}\,(\mathbf{A}\cdot\mathbf{C}) -
+\mathbf{C}\,(\mathbf{A}\cdot\mathbf{B}) \quad\text{(regla «BAC menos
+CAB»)}</span></p>
+<h3 id="reglas-de-producto-con-nabla">6.2 Reglas de producto con <span
+class="math inline">\nabla</span></h3>
+<p>Linealidad: <span class="math inline">\nabla(f+g)=\nabla f+\nabla
+g</span>, y lo mismo para <span class="math inline">\nabla\cdot</span> y
+<span class="math inline">\nabla\times</span>.</p>
+<p>Productos de campos:</p>
+<p><span class="math display">\nabla(fg) = f\,\nabla g + g\,\nabla
+f</span></p>
+<p><span class="math display">\nabla\cdot(f\mathbf{A}) =
+f\,(\nabla\cdot\mathbf{A}) + \mathbf{A}\cdot(\nabla f)</span></p>
+<p><span class="math display">\nabla\times(f\mathbf{A}) =
+f\,(\nabla\times\mathbf{A}) - \mathbf{A}\times(\nabla f)</span></p>
+<p><span class="math display">\nabla\cdot(\mathbf{A}\times\mathbf{B}) =
+\mathbf{B}\cdot(\nabla\times\mathbf{A}) -
+\mathbf{A}\cdot(\nabla\times\mathbf{B})</span></p>
+<p><span class="math display">\nabla(\mathbf{A}\cdot\mathbf{B}) =
+\mathbf{A}\times(\nabla\times\mathbf{B}) +
+\mathbf{B}\times(\nabla\times\mathbf{A}) +
+(\mathbf{A}\cdot\nabla)\mathbf{B} +
+(\mathbf{B}\cdot\nabla)\mathbf{A}</span></p>
+<p><span class="math display">\nabla\times(\mathbf{A}\times\mathbf{B}) =
+(\mathbf{B}\cdot\nabla)\mathbf{A} - (\mathbf{A}\cdot\nabla)\mathbf{B} +
+\mathbf{A}\,(\nabla\cdot\mathbf{B}) -
+\mathbf{B}\,(\nabla\cdot\mathbf{A})</span></p>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A5]</strong> Las seis identidades de
+arriba las verifiqué simbólicamente con campos genéricos (SymPy), no de
+memoria. Por ahora basta con saber que existen y dónde buscarlas; se
+memorizan las tres primeras.</p>
+</blockquote>
+<h2 id="operadores-de-segundo-orden">7. Operadores de segundo orden</h2>
+<p>Aplicando <span class="math inline">\nabla</span> dos veces hay cinco
+combinaciones posibles:</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Expresión</th>
+<th>Resultado</th>
+<th>Comentario</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(a)</td>
+<td><span class="math inline">\nabla\cdot(\nabla f)=\nabla^2
+f</span></td>
+<td>escalar</td>
+<td><strong>Laplaciano</strong></td>
+</tr>
+<tr class="even">
+<td>(b)</td>
+<td><span class="math inline">\nabla\times(\nabla
+f)=\mathbf{0}</span></td>
+<td>vector</td>
+<td><strong>siempre</strong> nulo</td>
+</tr>
+<tr class="odd">
+<td>(c)</td>
+<td><span class="math inline">\nabla(\nabla\cdot\mathbf{F})</span></td>
+<td>vector</td>
+<td>rara vez aparece en física, sin nombre especial</td>
+</tr>
+<tr class="even">
+<td>(d)</td>
+<td><span
+class="math inline">\nabla\cdot(\nabla\times\mathbf{F})=0</span></td>
+<td>escalar</td>
+<td><strong>siempre</strong> nulo</td>
+</tr>
+<tr class="odd">
+<td>(e)</td>
+<td><span
+class="math inline">\nabla\times(\nabla\times\mathbf{F})=\nabla(\nabla\cdot\mathbf{F})-\nabla^2\mathbf{F}</span></td>
+<td>vector</td>
+<td>identidad conocida</td>
+</tr>
+</tbody>
+</table>
+<h3 id="a-laplaciano-divergencia-del-gradiente">(a) Laplaciano:
+divergencia del gradiente</h3>
+<p><span class="math display">\nabla\cdot(\nabla f) =
+\left(\hat{x}\,\frac{\partial}{\partial
+x}+\hat{y}\,\frac{\partial}{\partial
+y}+\hat{z}\,\frac{\partial}{\partial z}\right)\cdot\left(\frac{\partial
+f}{\partial x}\,\hat{x}+\frac{\partial f}{\partial
+y}\,\hat{y}+\frac{\partial f}{\partial z}\,\hat{z}\right)</span></p>
+<p><span class="math display">\Rightarrow\quad \nabla^2 f =
+\frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} +
+\frac{\partial^2 f}{\partial z^2}</span></p>
+<blockquote class="fix">
+<p><strong>[Corregido · C7]</strong> El título de tus notas era
+“divergencia de la divergencia”. Es la divergencia <strong>del
+gradiente</strong>: primero se calcula <span class="math inline">\nabla
+f</span> (un vector) y después su divergencia.</p>
+</blockquote>
+<blockquote class="fix">
+<p><strong>[Corregido · C8]</strong> La línea final de tus notas decía
+<span class="math inline">\nabla\cdot(\nabla\times F)=\dfrac{\partial^2
+T}{\partial x^2}+\dots</span>, con un <span
+class="math inline">\times</span> de más y con <span
+class="math inline">F</span> y <span class="math inline">T</span>
+mezclados. Es <span class="math inline">\nabla\cdot(\nabla f)</span>, y
+el resultado (<span class="math inline">\nabla^2 f</span>) usa el mismo
+escalar <span class="math inline">f</span> en todos los términos.</p>
+</blockquote>
+<h3 id="b-y-d-los-dos-ceros">(b) y (d): los dos ceros</h3>
+<p><span class="math display">\nabla\times(\nabla
+f)=\mathbf{0}\qquad\qquad
+\nabla\cdot(\nabla\times\mathbf{F})=0</span></p>
+<p>Valen <strong>siempre</strong> (para campos con derivadas segundas
+continuas, porque las derivadas cruzadas conmutan). Los dos ceros se
+usan constantemente en electromagnetismo.</p>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A6]</strong> Conexión con el curso (se
+verá en Griffiths cap. 2 y 5): como <span
+class="math inline">\nabla\times(\nabla f)=\mathbf{0}</span>, si un
+campo tiene rotor nulo se lo puede escribir como un gradiente (el campo
+eléctrico estático: <span class="math inline">\mathbf{E}=-\nabla
+V</span>). Como <span
+class="math inline">\nabla\cdot(\nabla\times\mathbf{A})=0</span>, un
+campo escrito como rotor tiene divergencia nula (el campo magnético:
+<span class="math inline">\mathbf{B}=\nabla\times\mathbf{A}</span>).</p>
+</blockquote>
+<h3 id="e-rotor-del-rotor">(e) Rotor del rotor</h3>
+<p><span class="math display">\nabla\times(\nabla\times\mathbf{F}) =
+\nabla(\nabla\cdot\mathbf{F}) - \nabla^2\mathbf{F}</span></p>
+<p>donde <span
+class="math inline">\nabla^2\mathbf{F}=(\nabla^2F_x)\,\hat{x}+(\nabla^2F_y)\,\hat{y}+(\nabla^2F_z)\,\hat{z}</span>
+es el <strong>Laplaciano vectorial</strong> (el Laplaciano aplicado a
+cada componente).</p>
+<blockquote class="fix">
+<p><strong>[Corregido · C9]</strong> Tus notas escribían <span
+class="math inline">\nabla\times(\nabla\times\mathbf{T})=\nabla(\nabla\cdot\mathbf{T})=-\nabla^2\mathbf{T}</span>.
+Eso mezcla dos cosas: la identidad correcta tiene una
+<strong>resta</strong>, <span
+class="math inline">\nabla(\nabla\cdot\mathbf{F})-\nabla^2\mathbf{F}</span>,
+y no hay un segundo signo igual. Esta identidad la verifiqué
+simbólicamente.</p>
+</blockquote>
+<blockquote class="fix">
+<p><strong>[Corregido · C10]</strong> Tus notas decían “no da un
+resultado conocido”. Sí lo da: es la identidad de arriba, que más
+adelante se usa, por ejemplo, para obtener la ecuación de ondas a partir
+de las ecuaciones de Maxwell. Por eso el caso (c) aparece dentro de
+este.</p>
+</blockquote>
+<h2 id="pendientes-para-próximas-sesiones">8. Pendientes para próximas
+sesiones</h2>
+<p>Quedan fuera de esta nota, y están en tu lista de la sesión 1: el
+teorema de la divergencia y de Stokes (B), coordenadas esféricas y
+cilíndricas (C) y la delta de Dirac (D). Cuando las tengas escritas, las
+sumamos como <code>02-...md</code>.</p>
+<h2 id="hoja-resumen-1-página" class="pagebreak">9. Hoja resumen (1 página)</h2>
+<p><strong>Definiciones</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Fórmula</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\nabla</span></td>
+<td><span
+class="math inline">\hat{x}\,\partial_x+\hat{y}\,\partial_y+\hat{z}\,\partial_z</span></td>
+<td>operador</td>
+</tr>
+<tr class="even">
+<td>Gradiente</td>
+<td><span class="math inline">\nabla f=(\partial_x f,\ \partial_y f,\
+\partial_z f)</span></td>
+<td>vector</td>
+</tr>
+<tr class="odd">
+<td>Divergencia</td>
+<td><span
+class="math inline">\nabla\cdot\mathbf{F}=\partial_xF_x+\partial_yF_y+\partial_zF_z</span></td>
+<td>escalar</td>
+</tr>
+<tr class="even">
+<td>Rotor</td>
+<td><span
+class="math inline">\nabla\times\mathbf{F}=(\partial_yF_z-\partial_zF_y,\
+\partial_zF_x-\partial_xF_z,\ \partial_xF_y-\partial_yF_x)</span></td>
+<td>vector</td>
+</tr>
+<tr class="odd">
+<td>Laplaciano</td>
+<td><span class="math inline">\nabla^2
+f=\partial_x^2f+\partial_y^2f+\partial_z^2f</span></td>
+<td>escalar</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretación</strong></p>
+<ul>
+<li><span class="math inline">\nabla f</span> apunta hacia el máximo
+crecimiento; <span class="math inline">\lvert\nabla f\rvert</span> es la
+tasa; es perpendicular a las curvas de nivel; <span
+class="math inline">\nabla f=\mathbf{0}</span> en extremos y
+sillas.</li>
+<li><span class="math inline">\nabla\cdot\mathbf{F}&gt;0</span> fuente,
+<span class="math inline">&lt;0</span> sumidero, <span
+class="math inline">=0</span> flujo neto nulo.</li>
+<li><span class="math inline">\nabla\times\mathbf{F}</span>: eje y
+sentido del giro (mano derecha); módulo = intensidad.</li>
+</ul>
+<p><strong>Identidades de segundo orden</strong></p>
+<p><span class="math display">\nabla\times(\nabla f)=\mathbf{0}\qquad
+\nabla\cdot(\nabla\times\mathbf{F})=0\qquad
+\nabla\times(\nabla\times\mathbf{F})=\nabla(\nabla\cdot\mathbf{F})-\nabla^2\mathbf{F}</span></p>
+<p><strong>Productos de vectores</strong></p>
+<ul>
+<li><span
+class="math inline">\mathbf{A}\cdot\mathbf{B}=\lvert\mathbf{A}\rvert\lvert\mathbf{B}\rvert\cos\theta</span>,
+conmutativo; <span
+class="math inline">\mathbf{A}\times\mathbf{B}=-\mathbf{B}\times\mathbf{A}</span>,
+módulo <span
+class="math inline">\lvert\mathbf{A}\rvert\lvert\mathbf{B}\rvert\sin\theta</span>.</li>
+<li><span
+class="math inline">\mathbf{A}\cdot(\mathbf{B}\times\mathbf{C})</span>
+es cíclico; <span
+class="math inline">\mathbf{A}\times(\mathbf{B}\times\mathbf{C})=\mathbf{B}(\mathbf{A}\cdot\mathbf{C})-\mathbf{C}(\mathbf{A}\cdot\mathbf{B})</span>.</li>
+</ul>
+<p><strong>Reglas de producto con <span
+class="math inline">\nabla</span> (las tres básicas)</strong></p>
+<p><span class="math display">\nabla(fg)=f\nabla g+g\nabla f\qquad
+\nabla\cdot(f\mathbf{A})=f\,\nabla\cdot\mathbf{A}+\mathbf{A}\cdot\nabla
+f\qquad
+\nabla\times(f\mathbf{A})=f\,\nabla\times\mathbf{A}-\mathbf{A}\times\nabla
+f</span></p>
+<p><strong>Ejemplo guardado:</strong> <span
+class="math inline">f=x^2+y^3+z^4\ \Rightarrow\ \nabla f=(2x,\ 3y^2,\
+4z^3)</span>.</p>
+<blockquote class="add">
+<p><strong>[Añadido por Claude · A8]</strong> Esta hoja resumen es el
+“output: 1 page cheat sheet” de tus notas. En el HTML se imprime en una
+página aparte (Ctrl+P).</p>
+</blockquote>
+</body>
+</html>

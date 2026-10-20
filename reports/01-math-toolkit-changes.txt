@@ -1,0 +1,188 @@
+CHANGE REPORT: 01-math-toolkit
+===============================================================================
+Source:   originals/Math_toolkit01.pdf  (4 handwritten pages, Spanish)
+Result:   notes/01-math-toolkit.md  (+ generated notes/01-math-toolkit.html)
+Date:     2026-10-19
+Language: notebook in Spanish; this report in English.
+
+Each entry has an ID that matches the colored box in the notebook.
+Types: C = correction/clarification of your content, A = addition by Claude,
+N = notation change, R = reorganization, I = instruction in your notes.
+Page numbers refer to the PDF (p1 gradient intro, p2 example + divergence start,
+p3 divergence end + curl, p4 second-order operations).
+
+-------------------------------------------------------------------------------
+0. ILLEGIBLE PARTS
+-------------------------------------------------------------------------------
+None. All four pages were readable. Only the repeated use of F / f / T for the
+same object was ambiguous (see N1).
+
+-------------------------------------------------------------------------------
+1. NOTATION
+-------------------------------------------------------------------------------
+N1  Where: whole document (p1, p2, p3, p4).
+    What:  Scalar field is always "f"; vector field is always bold "F".
+           Notes used F or T for scalars (gradient, Laplacian) and T for
+           vectors (divergence, curl).
+    Why:   Using the same letter for a scalar and a vector makes formulas
+           ambiguous (e.g. div T written as dT/dx + dT/dy + dT/dz).
+
+-------------------------------------------------------------------------------
+2. REORGANIZATION
+-------------------------------------------------------------------------------
+R1  What:  New order: 1 Notation, 2 Nabla operator, 3 Gradient (definition,
+           stationary points, example), 4 Divergence, 5 Curl, 6 Product
+           properties, 7 Second-order operators, 8 Pending topics, 9 Cheat
+           sheet.
+    Where: Your order was gradient intro (p1) -> example (p2) -> "3 operations
+           with nabla" -> divergence -> curl -> second order.
+    Why:   The nabla definition (your "Nota" at the bottom of p1) and the
+           three-operation list (p2) are the foundation, so they now come first.
+           The example (Problema 1.11) sits right after the gradient theory it
+           illustrates. A summary table of the three operations was added.
+R2  What:  The five second-order operations (p4, labeled A to E) are put in one
+           table, then each is discussed. Ordering inside is the same as yours.
+    Why:   A table makes the five cases comparable at a glance.
+R3  What:  The Laplacian derivation (p4, A) is kept but placed under "(a)".
+    Why:   Consistency with R2.
+
+-------------------------------------------------------------------------------
+3. CORRECTIONS AND CLARIFICATIONS OF YOUR CONTENT
+-------------------------------------------------------------------------------
+C1  Where: p1, first bullet (gradient definition).
+    Notes: "Indica hacia dónde se encuentra el máximo cambio de pendiente."
+    Now:   The gradient points toward the direction of maximum increase of f.
+    Why:   The slope is the magnitude of the gradient; it is not the thing that
+           changes. Your own later bullet on p1 already says "dirección de
+           máximo incremento", so this makes the first bullet consistent.
+
+C2  Where: p1, bullet 3 ("radio de crecimiento").
+    Now:   "tasa de crecimiento" (rate of growth).
+    Why:   "Radio" (radius) looks like a slip for "ratio/rate".
+
+C3  Where: p1, bottom "Nota".
+    Notes: nabla = [d/dx ; d/dy ; d/dz] . [x^ ; y^ ; z^]  (dot between lists).
+    Now:   nabla = x^ d/dx + y^ d/dy + z^ d/dz.
+    Why:   It is a sum of three terms, each a unit vector times a derivative.
+           As written, it reads as a scalar dot product, which is wrong for an
+           operator that has to stay a vector.
+
+C4  Where: p2, divergence formula.
+    Notes: div T = dT/dx + dT/dy + dT/dz.
+    Now:   div F = dFx/dx + dFy/dy + dFz/dz.
+    Why:   Divergence differentiates each vector component along its own axis.
+           Your margin note ("pierde carácter vectorial") shows you meant the
+           components; this just writes them out.
+
+C5  Where: p2-p3, "Nos da una noción de la velocidad con la que nos movemos
+           respecto a p0".
+    Now:   Divergence measures the expansion rate of the field, i.e. net flux
+           out of a small neighbourhood of p0 per unit volume.
+    Why:   Divergence is not a velocity of motion relative to p0. It is flux
+           density. Marked "Aclarado" because the idea behind your sentence
+           (how fast the field spreads) is kept.
+
+C6  Where: p3, "Los puntos de div T <= 0 son sumideros".
+    Now:   div < 0 are sinks; div = 0 is neither a source nor a sink.
+    Why:   Zero divergence means zero net flux, which is not a sink.
+
+C7  Where: p4, (A), title "Laplaciano (divergencia de la divergencia F)".
+    Now:   Divergence of the gradient.
+    Why:   The divergence of a divergence does not exist (the divergence of a
+           vector field is a scalar, and divergence needs a vector). The
+           Laplacian is div(grad f).
+
+C8  Where: p4, (A), last equation: div(curl F) = d2T/dx2 + d2T/dy2 + d2T/dz2.
+    Now:   div(grad f) = nabla^2 f = d2f/dx2 + d2f/dy2 + d2f/dz2.
+    Why:   The right side is the Laplacian; the left side had a cross
+           product by mistake. The line right above it in your notes (the
+           product of the two brackets) is correct and only uses a gradient.
+
+C9  Where: p4, (E).
+    Notes: curl(curl T) = grad(div T) = -nabla^2 T.
+    Now:   curl(curl F) = grad(div F) - nabla^2 F  (vector Laplacian).
+    Why:   Correct identity has a subtraction and no second equals sign. The
+           notes' version equates grad(div T) with -nabla^2 T, which is false
+           in general. Verified symbolically with SymPy (see A5).
+
+C10 Where: p4, (E), comment "No da un resultado conocido".
+    Now:   It does: it is the identity from C9, used for example to derive the
+           wave equation from Maxwell's equations.
+    Why:   The notes' comment contradicted the identity. Also explains why (C)
+           appears inside (E).
+
+C11 Where: p2, item 1 "Prod. por escalar: alpha grad T = [alpha dT/dx; ...]".
+    Now:   Clarified that nabla times a scalar field is the gradient, and that
+           for a constant alpha: nabla(alpha f) = alpha nabla f (linearity).
+    Why:   The item mixed "multiplying nabla by a scalar field" with "scaling
+           the gradient by a constant". Content is kept, only the wording.
+
+Things I checked and left unchanged (they were correct):
+ - gradient in R^3 and |grad f| formula (p1);
+ - example f = x^2 + y^3 + z^4 -> grad f = (2x, 3y^2, 4z^3) (p2);
+ - determinant form and component expansion of the curl (p3);
+ - (B) curl(grad f) = 0 and (D) div(curl F) = 0 (p4);
+ - (C) grad(div F) "rarely appears and has no special name" (p4).
+
+-------------------------------------------------------------------------------
+4. ADDITIONS BY CLAUDE (content that was not in your notes)
+-------------------------------------------------------------------------------
+A1  Where: section 3.2. Figure 1 (fig1_gradiente.png): contours and gradient
+    arrows for f = x^2 + y^2 (minimum) and f = x^2 - y^2 (saddle).
+    Why:   Gives a picture of the gradient and of stationary points.
+    How:   figures/make_figures.py (Python/matplotlib), regenerate any time.
+A2  Where: section 3.2. Necessary-not-sufficient remark for grad f = 0,
+    directional derivative D_u f = grad f . u, gradient perpendicular to level
+    sets.
+    Why:   Justifies "gradient points toward max increase" and completes the
+           stationary-point bullet from p1.
+A3  Where: section 5. Figure 2 (fig2_divergencia_rotor.png): source, sink and
+    rotation fields with their div and curl, plus the worked check for
+    F = (-y, x, 0).
+    Why:   Visual anchor for the "source / sink / rotation" language.
+A4  Where: section 6.1 (dot and cross product properties, triple products).
+    Why:   Your notes (p3) asked Claude to look up and write these. Instruction
+           line is omitted from the notebook (see I1).
+A5  Where: section 6.2 (six product rules with nabla) and the identity in
+    7(e).
+    Why:   Natural follow-up to the product properties; all six rules and
+           curl(curl F) were verified symbolically with SymPy with generic
+           functions, not from memory.
+A6  Where: section 7, after (b)/(d). Link to the course: curl(grad f) = 0 ->
+    E = -grad V (electrostatics); div(curl A) = 0 -> B = curl A has zero
+    divergence.
+    Why:   Shows why these two zeros matter; will reappear in Griffiths ch.2/5.
+A7  Where: section 5. Right-hand-rule reading of the curl and "curl = 2 omega"
+    for rigid rotation.
+    Why:   Your notes say "cuánto y cómo rota", this states how to read the
+           direction and magnitude.
+A8  Where: section 9. One-page cheat sheet.
+    Why:   Your notes list "Output: 1 page cheat sheet". It prints on its own
+           page (Ctrl+P from the HTML).
+A9  Where: section 3.3. Numerical check: grad f at (1,2,1) = (2,12,4),
+    |grad f| = sqrt(164) ~ 12.8; grad f = 0 only at the origin.
+    Why:   A quick self-check for the worked example.
+
+-------------------------------------------------------------------------------
+5. INSTRUCTIONS FOUND IN YOUR NOTES
+-------------------------------------------------------------------------------
+I1  Where: p3, "[ CLAUDE busca las propiedades, escribilas y omití esta línea ]"
+    Done:  Properties written (A4). The instruction line itself is not in the
+           notebook.
+I2  Where: p1 (list from the first notes file, still true here): topics B
+    (divergence theorem / Stokes), C (spherical and cylindrical coordinates)
+    and D (Dirac delta) are not in this handwritten file.
+    Done:  Listed under section 8 "Pendientes" so they can be added later as
+           02-*.md.
+
+-------------------------------------------------------------------------------
+6. BUILD AND TECHNICAL NOTES
+-------------------------------------------------------------------------------
+ - Source of truth is notes/01-math-toolkit.md; notes/01-math-toolkit.html is
+   generated with `python3 build.py` (pandoc + KaTeX).
+ - The HTML loads KaTeX from cdnjs, so equations render only with an internet
+   connection. The .md shows equations on GitHub without that.
+ - I could not open the HTML in a browser from this environment. The Markdown
+   to HTML conversion ran without errors and has 154 math spans and 0 stray
+   "$" signs, but the equations have not been viewed rendered. If something
+   looks off in KaTeX, tell me which formula.

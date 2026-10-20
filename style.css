@@ -1,0 +1,87 @@
+/* Cuaderno de Física 3: estilo compartido por todas las notas */
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap");
+
+:root {
+  --paper: #f7f8fb; --grid: #e3e7ef; --ink: #1f2a44; --muted: #5a6479; --rule: #cdd3e0;
+  --fix: #b45309;  --fix-bg: #fef3e2;
+  --clar: #0f766e; --clar-bg: #e6f5f3;
+  --add: #1d4ed8;  --add-bg: #e8eefc;
+  --not: #6d28d9;  --not-bg: #f0eafd;
+  --focus: #1d4ed8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141a2b; --grid: #1e263b; --ink: #e6eaf4; --muted: #a2abc0; --rule: #323b55;
+    --fix: #f5a65b;  --fix-bg: #2d2214;
+    --clar: #5fd3c6; --clar-bg: #12302d;
+    --add: #8fb0ff;  --add-bg: #1a2447;
+    --not: #b99cf5;  --not-bg: #281f45;
+    --focus: #8fb0ff;
+  }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body {
+  margin: 0 auto; max-width: 46rem; padding: 2.5rem 1.25rem 5rem;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-size: 1.08rem; line-height: 1.65; color: var(--ink);
+  /* hoja cuadriculada, como tu cuaderno */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px; background-attachment: local;
+}
+header#title-block-header { display: none; }
+
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .4rem; }
+h2 { font-size: 1.45rem; margin: 2.6rem 0 .6rem; padding-bottom: .25rem; border-bottom: 2px solid var(--ink); }
+h3 { font-size: 1.15rem; margin: 1.8rem 0 .4rem; }
+p, li { max-width: 68ch; }
+em { color: var(--muted); }
+code { font-size: .9em; background: var(--add-bg); padding: .05em .35em; border-radius: 3px; }
+a { color: var(--focus); }
+a:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+nav#TOC {
+  margin: 1.2rem 0 2rem; padding: .8rem 1.1rem; font-size: .95rem;
+  border: 1px solid var(--rule); background: var(--paper);
+}
+nav#TOC ul { margin: .2rem 0; padding-left: 1.2rem; list-style: none; }
+nav#TOC > ul { padding-left: 0; }
+nav#TOC a { text-decoration: none; }
+nav#TOC a:hover { text-decoration: underline; }
+
+table { border-collapse: collapse; margin: 1.2rem 0; font-size: .97rem; background: var(--paper); display: block; overflow-x: auto; }
+th, td { border: 1px solid var(--rule); padding: .4rem .7rem; vertical-align: top; text-align: left; }
+th { background: var(--add-bg); }
+
+figure { margin: 1.6rem 0; }
+figure img { max-width: 100%; height: auto; background: #fff; border: 1px solid var(--rule); }
+figcaption { font-size: .92rem; color: var(--muted); margin-top: .4rem; }
+
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: .3rem 0; }
+
+/* Recuadros de cambios (se identifican por la etiqueta inicial) */
+blockquote { margin: 1.1rem 0; padding: .6rem 1rem; border-left: 5px solid var(--muted); background: var(--paper); font-size: .98rem; }
+blockquote p { margin: .3rem 0; }
+blockquote.fix  { border-color: var(--fix);  background: var(--fix-bg); }
+blockquote.clar { border-color: var(--clar); background: var(--clar-bg); }
+blockquote.add  { border-color: var(--add);  background: var(--add-bg); }
+blockquote.not  { border-color: var(--not);  background: var(--not-bg); }
+blockquote.fix  > p:first-child > strong:first-child { color: var(--fix); }
+blockquote.clar > p:first-child > strong:first-child { color: var(--clar); }
+blockquote.add  > p:first-child > strong:first-child { color: var(--add); }
+blockquote.not  > p:first-child > strong:first-child { color: var(--not); }
+
+@media (max-width: 600px) { body { font-size: 1rem; padding: 1.5rem .9rem 4rem; } }
+
+@media print {
+  :root { --paper: #fff; --grid: #fff; --ink: #000; --muted: #333; --rule: #999; }
+  body { background: #fff; font-size: 10.5pt; max-width: none; padding: 0; line-height: 1.45; }
+  nav#TOC { display: none; }
+  blockquote { break-inside: avoid; }
+  h2.pagebreak { break-before: page; margin-top: 0; }
+  h2.pagebreak ~ * { font-size: 9.5pt; line-height: 1.35; }
+  h2.pagebreak ~ table { font-size: 9pt; }
+}
