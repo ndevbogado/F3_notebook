@@ -21,7 +21,7 @@
 }
 
 * { box-sizing: border-box; }
-html { background: var(--paper); }
+html { background: var(--paper); scroll-padding-top: 4.5rem; }
 body {
   margin: 0 auto; max-width: 46rem; padding: 2.5rem 1.25rem 5rem;
   font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -85,3 +85,20 @@ blockquote.not  > p:first-child > strong:first-child { color: var(--not); }
   h2.pagebreak ~ * { font-size: 9.5pt; line-height: 1.35; }
   h2.pagebreak ~ table { font-size: 9pt; }
 }
+
+/* Navegación entre notas */
+.pagenav {
+  display: flex; justify-content: space-between; align-items: center; gap: .6rem;
+  position: sticky; top: 0; z-index: 5; margin: 0 0 1.2rem; padding: .55rem 0;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+  font: 600 .9rem/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.pagenav.bottom { position: static; margin: 3rem 0 0; border-bottom: 0; border-top: 1px solid var(--rule); }
+.pagenav .btn {
+  display: inline-block; padding: .4rem .85rem; border: 1px solid var(--rule); border-radius: 4px;
+  background: var(--paper); color: var(--ink); text-decoration: none;
+}
+.pagenav a.btn:hover { border-color: var(--focus); color: var(--focus); }
+.pagenav a.btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.pagenav .btn.disabled { opacity: .4; cursor: default; }
+@media print { .pagenav { display: none; } }
